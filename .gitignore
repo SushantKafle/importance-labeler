@@ -4,4 +4,5 @@ data/annotation.csv
 data/script.txt
 data/train.txt
 data/test.txt
-data/senna/*
+data/senna*
+!data/senna-cmp.npz
