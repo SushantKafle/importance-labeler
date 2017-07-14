@@ -1,0 +1,4 @@
+ABOUT
+=====
+
+This project contains a CRF-based labeler that assigns importance scores to words in the sentence.
