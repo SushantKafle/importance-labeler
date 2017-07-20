@@ -8,10 +8,12 @@ class config():
 	tags_vocab_path = 'data/tags.txt'
 
 	annotation_src = 'data/annotation.csv'
+	cmp_embeddings_src = 'data/senna-cmp.npz'
+
 	random_seed = 1
 
-	dim = 50
-	cmp_embeddings_src = 'data/senna-cmp.npz'
+	word_embedding_size = 50
+	
 
 
 	senna_home = "data/senna/"

@@ -1,12 +1,10 @@
 import numpy as np
-
+import logging
 
 def get_class(value):
 	if value < 0.4:
 		return 'nimp'
 	elif value < 0.6:
-		return 'limp'
-	elif value < 0.8:
 		return 'imp'
 	
 	return 'vimp' 
@@ -77,4 +75,17 @@ def clean_sent(sent):
 					word = word[:-1]
 				word_lst.append(word)
 	return word_lst
+
+
+def get_logger(name):
+	logger = logging.getLogger('logger')
+	logger.setLevel(logging.DEBUG)
+	logging.basicConfig(format='%(message)s', level=logging.DEBUG)
+
+	handler = logging.FileHandler(name)
+	handler.setLevel(logging.DEBUG)
+	handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s: %(message)s'))
+	logging.getLogger().addHandler(handler)
+
+	return logger
 			
