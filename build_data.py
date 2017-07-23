@@ -34,6 +34,9 @@ print ("Building vocab..")
 vocab_words, vocab_tags = get_vocab(all_sentences_ann)
 vocab_emb = get_senna_vocab(os.path.join(config.senna_home, 'hash/words.lst'))
 vocab_words = vocab_words & vocab_emb
+vocab_words.add(UNK)
+vocab_words.add(NUM)
+
 print ("Num words: %d" % len(vocab_words))
 print ("Num tags: %d" % len(vocab_tags))
 
@@ -50,7 +53,7 @@ vocab_tags = load_vocab(config.tags_vocab_path)
 #saving word embeddings for the vocabulary
 print ("Preparing embeddings for the vocab..")
 save_senna_vectors(vocab_words, vocab_emb, os.path.join(config.senna_home, 'embeddings/embeddings.txt'), 
-	config.cmp_embeddings_src, config.dim)
+	config.cmp_embeddings_src, config.word_embedding_dim)
 
 #creating the training and test files
 random.shuffle(all_sentences_ann)
