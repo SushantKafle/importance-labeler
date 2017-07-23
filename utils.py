@@ -1,5 +1,8 @@
 import numpy as np
-import logging
+import logging, os
+
+UNK = "$UNK$"
+NUM = "0"
 
 def get_class(value):
 	if value < 0.4:
@@ -13,6 +16,8 @@ def get_vocab(sents_ann):
 	vocab_word, vocab_label = set(), set()
 	for sent in sents_ann:
 		for word, label in sent:
+			if word.isdigit():
+				word = '0'
 			vocab_word.add(word.lower())
 			vocab_label.add(label)
 	return vocab_word, vocab_label
@@ -42,6 +47,7 @@ def load_vocab(filename):
     with open(filename) as f:
         for idx, word in enumerate(f):
             word = word.strip()
+            #word id actually start from 1
             d_[word] = idx
 
     return d_
@@ -88,4 +94,38 @@ def get_logger(name):
 	logging.getLogger().addHandler(handler)
 
 	return logger
+
+def create_folders(path):
+	if not os.path.exists(path):
+		os.makedirs(path)
+	return path
+
+
+def minibatches(data, batch_size):
+	x_batch, y_batch, z_batch = [], [], []
+	for (x, y, z) in data:
+		if len(x_batch) == batch_size:
+			yield x_batch, y_batch, z_batch
+			x_batch, y_batch, z_batch = [], [], []
+
+		x_batch += [x]
+		y_batch += [y]	
+		z_batch += [z]
+
+	#this makes things tricky later
+	if len(x_batch) != 0:
+		yield x_batch, y_batch, z_batch
+
+
+def pad_sequences(sequences, pad_tok):
+	max_length = max(map(lambda x: len(x), sequences))
+	sequence_padded, sequence_length = [], []
+
+	for sequence in sequences:
+		seq = list(sequence) + [pad_tok] * max(max_length - len(sequence), 0)
+		sequence_padded += [seq]
+		sequence_length += [min(len(sequence), max_length)]
+
+	return sequence_padded, sequence_length
+
 			
