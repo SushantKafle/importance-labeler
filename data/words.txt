@@ -33,7 +33,7 @@ graph
 technique
 disability
 dystrophy
-to
+0
 finally
 0.
 device
@@ -173,7 +173,6 @@ interact
 navigation
 macintosh
 tunnel
-showing
 tasks
 useful
 although
@@ -199,7 +198,7 @@ headband
 eye
 figure
 would
-lose
+to
 browse
 prevalence
 display
@@ -330,6 +329,7 @@ childhood
 their
 perhaps
 switch
+lose
 green
 allow
 enter
@@ -344,6 +344,7 @@ gradual
 over
 move
 vary
+$UNK$
 jpeg
 feature
 symbols
@@ -714,7 +715,7 @@ adapts
 links
 keyboards
 nicely
-h
+approach
 throughout
 bad
 stuff
@@ -1030,7 +1031,7 @@ lady
 you
 d
 loss
-approach
+showing
 cognitive
 lost
 sizes
@@ -1170,6 +1171,7 @@ start
 gaze
 low
 way
+h
 transitioning
 icon
 was

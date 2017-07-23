@@ -1,4 +1,3 @@
 nimp
-vimp
-limp
 imp
+vimp
