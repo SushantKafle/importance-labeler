@@ -2,32 +2,58 @@ from config import config
 import os, random, csv
 from nltk.tokenize import sent_tokenize
 from utils import *
+from tokenizer import TedliumTokenizer
 
 
 #read and tokenize the scripts to sentences
 print ("Reading the script..")
-with open(config.script_src) as script_:
-	all_sentences = sent_tokenize(script_.read())
-print ("Total sentences: %d" % len(all_sentences))
+allowable_ext = ['txt', 'stm']
+sentences = {}
+ted_tokenizer = TedliumTokenizer()
+
+for script_file in os.listdir(config.script_path):
+	file_ext = script_file[-3:]
+	all_sentences = []
+	
+	if not file_ext in allowable_ext:
+		continue
+
+	with open(os.path.join(config.script_path, script_file)) as script_:
+		if file_ext == 'txt':
+			all_sentences = sent_tokenize(script_.read())
+			sentences[script_file] = all_sentences
+		elif file_ext == 'stm':
+			all_sentences = ted_tokenizer.tokenize(script_)
+			sentences[script_file] = all_sentences
+
+print ("Total files: %d" % len(sentences))
 
 
 #read the annotation file
 print ("Reading the annotations..")
-annotations = []
-with open(config.annotation_src) as annotation_:
-	csv_reader = csv.reader(annotation_)
-	next(csv_reader, None)
-	for row in csv_reader:
-		annotations.append(get_class(float(row[1])))
+annotations = {}
+for script_file in sentences.keys():
+	all_annotations = []
+	#change extension to csv file
+	annotation_file = script_file + '.csv'
+	print (annotation_file)
+	with open(os.path.join(config.script_path, annotation_file)) as annotation_:
+		csv_reader = csv.reader(annotation_)
+		next(csv_reader, None)
+		for row in csv_reader:
+			all_annotations.append(get_class(float(row[1])))
+	annotations[script_file] = all_annotations
 		
 #attaching the importance score to the sentence
-idx = 0
 all_sentences_ann = []
-for sent in all_sentences:
-	words = clean_sent(sent)
-	if len(words) != 0:
-		all_sentences_ann.append(zip(words, annotations[idx: idx + len(words)]))
-		idx += len(words)
+for script_file in sentences.keys():
+	idx = 0
+	annotations_ = annotations[script_file]
+	for sent in sentences[script_file]:
+		words = clean_sent(sent)
+		if len(words) != 0:
+			all_sentences_ann.append(zip(words, annotations_[idx: idx + len(words)]))
+			idx += len(words)
 
 #building vocab
 print ("Building vocab..")
