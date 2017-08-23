@@ -1,0 +1,198 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Transcript Quality Evaluation: Report</title>
+  <meta name="description" content="HTML Document Summarizing the quality of ASR transcript">
+  <meta name="author" content="Sushant Kafle">
+
+  <!--<link rel="stylesheet" href="css/styles.css?v=1.0">-->
+  <style>
+
+	.container {
+	  width: 40%;
+	}
+
+	p {
+		width: 50%;
+	}
+
+	.text-box{
+		width: 60%;
+		font-size: 20px; 
+		word-spacing: 10px; 
+		line-height: 30px;
+	}
+  	span.imp0{
+  		background-color: #ffffe0;
+  	}
+
+  	span.imp1{
+  		background-color: #ffc58a;
+  	}
+
+  	span.imp2{
+  		background-color: #fa8266;
+  	}
+
+  	span.imp3{
+  		background-color: #db4551;
+  	}
+
+  	span.imp4{
+  		background-color: #aa0e27;
+  	}
+
+  	span.imp5{
+  		background-color: #8b0000;
+  	}
+
+  </style>
+</head>
+
+<body>
+
+	<h1>A. File Summary</h1>
+	<table border="1" cellpadding="10" width="50%">
+		<tr>
+			<td>Reference File:</td>
+			<td>%reference_filename</td>
+		</tr>
+
+		<tr>
+			<td>Hypothesis File:</td>
+			<td>%hypothesis_filename</td>
+		</tr>
+
+		<tr>
+			<td>Processed on:</td>
+			<td>%timestamp</td>
+		</tr>
+
+		<tr>
+			<td>Total words spoken:</td>
+			<td>%num_reference_words</td>
+		</tr>
+
+		<tr>
+			<td>Total words recognized:</td>
+			<td>%num_hypothesized_words</td>
+		</tr>
+	</table>
+
+	<br/>
+	<h1>B. Word Importance Visualization</h1>
+	<h3>1. Color Coding</h3>
+	<p>
+		Importance scores to the word is assigned from the score of 1 to 5; 1 indicating a low importance score and 5 indicating a high importance score. Table below shows the color coding of the scores used for visualization shown below.
+	</p>
+	<br/>
+
+	<table border="1" width="50%">
+		<tr>
+			<td bgcolor='#ffffe0'>0</td>
+			<td bgcolor='#ffc58a'>1</td>
+			<td bgcolor='#fa8266'>2</td>
+			<td bgcolor='#db4551'>3</td>
+			<td bgcolor='#aa0e27'>4</td>
+			<td bgcolor='#8b0000'>5</td>
+		</tr>
+	</table>
+
+	<br/>
+	<h3>2. Word Importance Labeling Output</h3>
+	<p class="text-box" style="width: 50%;border: 1px;">
+	<!--<span class="imp1">These</span> are some sample texts.-->
+	%text_with_word_importance_labels
+	</p>
+
+	<br/>
+	<h1>C. Error Statistics</h1>
+
+	<table border="1" cellpadding="10" width="50%">
+		<tr>
+			<td>Total number of words:</td>
+			<td>%num_reference_words</td>
+		</tr>
+
+		<tr>
+			<td>Total number of errors:</td>
+			<td>%num_errors</td>
+		</tr>
+
+		<tr>
+			<td>Number of substitution errors:</td>
+			<td>%num_substitution</td>
+		</tr>
+
+		<tr>
+			<td>Number of deletion errors:</td>
+			<td>%num_deletion</td>
+		</tr>
+
+		<tr>
+			<td>Number of insertion errors:</td>
+			<td>%num_insertion</td>
+		</tr>
+
+		<tr>
+			<td>
+				Word Error Rate (WER): <br/><br/>
+				WER = (Count of errors made [substituion, insertion and deletion]) / (Number of words actually spoken)
+			</td>
+			<td>%WER</td>
+		</tr>
+
+		<tr>
+			<td>
+				Weighted Word Error Rate (WWER): <br/><br/>
+				WWER = (Counts of errors made <b>weighted</b> by the importance scores of the words) / (Number of words actually spoken)
+			</td>
+			<td>%WWER</td>
+		</tr>
+
+	</table>
+
+	<h3>Visualizations</h3>
+	<p>
+		Bar graph showing the distribution of errors in different types of words categorized based on their importance scores.
+	</p>
+	<div class="container">
+		<div>
+			<canvas id="myChart" style="width: 40px; height: 40px;"></canvas>
+		</div>
+	</div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+	<script>
+		var ctx = document.getElementById("myChart").getContext('2d');
+		var myChart = new Chart(ctx, {
+		type: 'bar',
+		data: {
+			labels: %word_importance_labels,
+			datasets:
+			[
+				{
+					label: 'Num. Errors',
+					data: %error_count_labels,
+					backgroundColor: "#3e95cd"
+				},
+				{
+					label: 'Num. Words',
+					data: %count_labels,
+					backgroundColor: "#8e5ea2"	
+				}
+			]
+		},
+		options: {
+      	title: {
+		        display: true,
+		        text: 'Summary of the error accross word importance labels'
+      		}
+    	}
+		});
+	</script>
+</body>
+</html>
