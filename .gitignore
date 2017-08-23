@@ -1,8 +1,12 @@
 .DS*
 *.pyc
+__pycache__*
 data/annotation.csv
 data/scripts*
 data/train.txt
 data/test.txt
-data/senna*
-!data/senna-cmp.npz
+data/feats*
+outputs/*
+logs/*
+extras*
+
